@@ -57,6 +57,20 @@
         <framework.version>1.1.0</framework.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>fri-maven</id>
+            <name>Fri Maven Mirror</name>
+            <url>http://121.196.154.95:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
