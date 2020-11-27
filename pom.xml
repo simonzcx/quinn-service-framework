@@ -71,6 +71,19 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>ming-releases</id>
+            <name>MingCloud repository-releases</name>
+            <url>http://121.196.154.95:8081/repository/ming-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ming-snapshots</id>
+            <name>MingCloud repository-snapshots</name>
+            <url>http://121.196.154.95:8081/repository/ming-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
