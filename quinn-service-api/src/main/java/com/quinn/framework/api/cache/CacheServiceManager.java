@@ -1,6 +1,6 @@
 package com.quinn.framework.api.cache;
 
-import com.quinn.framework.api.ApplicationSerializer;
+import com.quinn.util.base.api.ApplicationSerializer;
 
 /**
  * 缓存管理器
