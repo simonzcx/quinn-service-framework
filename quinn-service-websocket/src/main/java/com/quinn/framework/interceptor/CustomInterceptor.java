@@ -7,6 +7,7 @@ import com.quinn.util.base.factory.LoggerExtendFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
@@ -19,6 +20,7 @@ import java.util.Map;
  * @Author: Simon.z
  * @since: 2020-11-28
  */
+@Component
 public class CustomInterceptor implements HandshakeInterceptor {
     private static final LoggerExtend LOGGER = LoggerExtendFactory.getLogger(CustomInterceptor.class);
 
@@ -28,17 +30,18 @@ public class CustomInterceptor implements HandshakeInterceptor {
             WebSocketHandler wsHandler, Map<String, Object> attributes
     ) throws Exception {
         LOGGER.error("握手拦截器前置拦截~~");
-        if(!(request instanceof ServletServerHttpRequest)){
-            return false;
+        if (!(request instanceof ServletServerHttpRequest)) {
+            return true;
         }
         HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
-        String userName = servletRequest.getSession().getAttribute(WsParamName.PARAM_TYPE_OF_USER_NAME).toString();
-        if(StringUtil.isEmpty(userName)){
+        Object attribute = servletRequest.getSession().getAttribute(WsParamName.PARAM_TYPE_OF_USER_KEY);
+        if (attribute != null) {
+            String userKey = attribute.toString();
+            attributes.put(WsParamName.PARAM_TYPE_OF_USER_KEY, userKey);
+            LOGGER.error("用户：" + userKey + "成功！");
+        } else {
             LOGGER.error("用户登录已失效");
             return false;
-        } else {
-            attributes.put(WsParamName.PARAM_TYPE_OF_USER_KEY, userName);
-            LOGGER.error("用户：" + userName + "成功！");
         }
         return true;
     }

@@ -3,8 +3,12 @@ package com.quinn.framework.handler;
 import com.alibaba.fastjson.JSON;
 import com.quinn.framework.model.WsMessage;
 import com.quinn.framework.util.WsParamName;
+import com.quinn.framework.util.enums.WsCommandInner;
 import com.quinn.framework.util.enums.WsCommandOuter;
+import com.quinn.util.base.StringUtil;
 import com.quinn.util.constant.enums.MessageLevelEnum;
+import com.quinn.util.constant.enums.UrgentLevelEnum;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
@@ -14,6 +18,7 @@ import org.springframework.web.socket.WebSocketSession;
  * @Author: Simon.z
  * @since: 2020-11-28
  */
+@Component
 public class CustomWsHandler implements WebSocketHandler {
 
     /**
@@ -35,13 +40,20 @@ public class CustomWsHandler implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        WsMessage param = JSON.parseObject(message.getPayload().toString(), WsMessage.class);
+        String payload = message.getPayload().toString();
+
+        WsMessage param;
+        if (StringUtil.isJson(payload)) {
+            param = JSON.parseObject(message.getPayload().toString(), WsMessage.class);
+        } else {
+            param = new WsMessage(WsCommandInner.NOTIFY.name(), UrgentLevelEnum.NORMAL.code, payload);
+        }
         WsMessageHandler.handleInn(param, session);
     }
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable error) throws Exception {
-        if(session.isOpen()){
+        if (session.isOpen()) {
             WsMessageHandler.handleOut(new WsMessage(WsCommandOuter.MESSAGE.name(),
                     MessageLevelEnum.ERROR.status, error.getMessage()), session);
         } else {

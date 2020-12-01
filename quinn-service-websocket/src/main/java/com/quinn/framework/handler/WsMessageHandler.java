@@ -78,7 +78,7 @@ public class WsMessageHandler {
      * 向外处理
      *
      * @param WSMessage 参数
-     * @param session          用户名
+     * @param session   用户名
      * @return 处理结果
      */
     public static boolean handleOut(WsMessage WSMessage, WebSocketSession session) {
@@ -95,7 +95,7 @@ public class WsMessageHandler {
      * 向外处理
      *
      * @param WSMessage 参数
-     * @param userKey          用户名
+     * @param userKey   用户名
      * @return 处理结果
      */
     public static boolean handleOut(WsMessage WSMessage, String userKey) {
@@ -119,7 +119,7 @@ public class WsMessageHandler {
     /**
      * 广播消息
      *
-     * @param WSMessage  消息
+     * @param WSMessage 消息
      */
     public static void boardCast(WsMessage WSMessage) {
         String text = JSONObject.toJSONString(WSMessage);
